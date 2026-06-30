@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 import Portada from "./slides/01_Portada";
@@ -41,12 +41,42 @@ export default function App() {
   const [current, setCurrent] = useState(0);
   const total = SLIDES.length;
 
+  // --- Swipe state ---
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+  const SWIPE_THRESHOLD = 50;
+
+  function goNext() {
+    setCurrent(function(c) { return c < total - 1 ? c + 1 : c; });
+  }
+  function goPrev() {
+    setCurrent(function(c) { return c > 0 ? c - 1 : c; });
+  }
+
+  function handlePointerDown(e) {
+    touchStartX.current = e.clientX;
+    touchStartY.current = e.clientY;
+  }
+
+  function handlePointerUp(e) {
+    if (touchStartX.current === null) return;
+
+    const dx = e.clientX - touchStartX.current;
+    const dy = e.clientY - touchStartY.current;
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return;
+
+    if (dx < 0) goNext();
+    else goPrev();
+  }
+
   useEffect(function() {
     function handler(e) {
-      if (e.key === "ArrowRight" || e.key === "ArrowDown")
-        setCurrent(function(c) { return c < total - 1 ? c + 1 : c; });
-      if (e.key === "ArrowLeft" || e.key === "ArrowUp")
-        setCurrent(function(c) { return c > 0 ? c - 1 : c; });
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") goNext();
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") goPrev();
     }
     window.addEventListener("keydown", handler);
     return function() { window.removeEventListener("keydown", handler); };
@@ -60,17 +90,20 @@ export default function App() {
         <div className="progress-fill" style={{ width: ((current + 1) / total * 100) + "%" }} />
       </div>
 
-      <div className="slide-area">
+      <div
+        className="slide-area"
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        style={{ touchAction: "pan-y" }}
+      >
         <SlideComponent />
       </div>
 
-      <div className="controls">
+      <div className="controls" style={{ position: "relative", zIndex: 10 }}>
         <button
+          type="button"
           className="ctrl-btn"
-          onPointerDown={function(e) {
-            e.preventDefault();
-            setCurrent(function(c) { return c > 0 ? c - 1 : c; });
-          }}
+          onClick={goPrev}
           disabled={current === 0}
         >←</button>
 
@@ -82,25 +115,21 @@ export default function App() {
         </div>
 
         <button
+          type="button"
           className="ctrl-btn"
-          onPointerDown={function(e) {
-            e.preventDefault();
-            setCurrent(function(c) { return c < total - 1 ? c + 1 : c; });
-          }}
+          onClick={goNext}
           disabled={current === total - 1}
         >→</button>
       </div>
 
-      <div className="dots">
+      <div className="dots" style={{ position: "relative", zIndex: 10 }}>
         {SLIDES.map(function(_, i) {
           return (
             <button
               key={i}
+              type="button"
               className={"dot" + (i === current ? " dot--active" : "")}
-              onPointerDown={function(e) {
-                e.preventDefault();
-                setCurrent(i);
-              }}
+              onClick={function() { setCurrent(i); }}
               title={SLIDES[i].title}
             />
           );

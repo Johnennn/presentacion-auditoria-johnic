@@ -350,7 +350,14 @@ html, body, #root {
   background: #ff5f57;
   box-shadow: 14px 0 0 #febc2e, 28px 0 0 #28c840;
 }
-.screenshot-frame img { width: 100%; display: block; }
+.screenshot-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 45vh;
+  object-fit: contain;
+  background: var(--bg);
+}
 
 /* GRID */
 .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
