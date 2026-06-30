@@ -41,7 +41,6 @@ export default function App() {
   const [current, setCurrent] = useState(0);
   const total = SLIDES.length;
 
-  // --- Swipe state ---
   const touchStartX = useRef(null);
   const touchStartY = useRef(null);
   const SWIPE_THRESHOLD = 50;
@@ -60,15 +59,11 @@ export default function App() {
 
   function handlePointerUp(e) {
     if (touchStartX.current === null) return;
-
     const dx = e.clientX - touchStartX.current;
     const dy = e.clientY - touchStartY.current;
-
     touchStartX.current = null;
     touchStartY.current = null;
-
     if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return;
-
     if (dx < 0) goNext();
     else goPrev();
   }
@@ -82,6 +77,10 @@ export default function App() {
     return function() { window.removeEventListener("keydown", handler); };
   }, []);
 
+  function handleExportPDF() {
+    window.print();
+  }
+
   var SlideComponent = SLIDES[current].component;
 
   return (
@@ -90,13 +89,26 @@ export default function App() {
         <div className="progress-fill" style={{ width: ((current + 1) / total * 100) + "%" }} />
       </div>
 
+      {/* Vista normal en pantalla — una slide a la vez */}
       <div
-        className="slide-area"
+        className="slide-area no-print-hidden"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         style={{ touchAction: "pan-y" }}
       >
         <SlideComponent />
+      </div>
+
+      {/* Vista solo-impresión — todas las slides apiladas, una por página */}
+      <div className="print-only">
+        {SLIDES.map(function(s, i) {
+          var S = s.component;
+          return (
+            <div className="print-slide" key={i}>
+              <S />
+            </div>
+          );
+        })}
       </div>
 
       <div className="controls" style={{ position: "relative", zIndex: 10 }}>
@@ -120,6 +132,13 @@ export default function App() {
           onClick={goNext}
           disabled={current === total - 1}
         >→</button>
+
+        <button
+          type="button"
+          className="export-btn"
+          onClick={handleExportPDF}
+          title="Exportar a PDF"
+        >⬇ PDF</button>
       </div>
 
       <div className="dots" style={{ position: "relative", zIndex: 10 }}>
