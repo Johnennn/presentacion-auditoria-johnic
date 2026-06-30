@@ -1,16 +1,84 @@
-# React + Vite
+# Presentación — Auditoría de Seguridad Web
+## Notaría Central Digital Servicios Legales
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Presentación de diapositivas construida en React + Vite con los resultados completos de la auditoría de seguridad web.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Estructura
 
-## React Compiler
+    presentacion_johnic/
+    ├── src/
+    │   ├── slides/
+    │   │   ├── 01_Portada.jsx
+    │   │   ├── 02_Empresa.jsx
+    │   │   ├── 03_Portal.jsx
+    │   │   ├── 04_Objetivo.jsx
+    │   │   ├── 05_Alcance.jsx
+    │   │   ├── 06_SQLiDesc.jsx
+    │   │   ├── 07_SQLiEvidencia.jsx
+    │   │   ├── 08_XSSDesc.jsx
+    │   │   ├── 09_XSSEvidencia.jsx
+    │   │   ├── 10_CmdDesc.jsx
+    │   │   ├── 11_CmdEvidencia.jsx
+    │   │   ├── 12_Activos.jsx
+    │   │   ├── 13_Matriz.jsx
+    │   │   ├── 14_Controles.jsx
+    │   │   ├── 15_Recuperacion.jsx
+    │   │   └── 16_Cierre.jsx
+    │   ├── img_johnic/
+    │   │   ├── sqli_johnic.png
+    │   │   ├── xss_johnic.png
+    │   │   └── comandos_johnic.png
+    │   ├── App.jsx
+    │   ├── App.css
+    │   ├── main.jsx
+    │   └── index.css
+    ├── index.html
+    ├── vite.config.js
+    ├── package.json
+    └── README.md
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## Diapositivas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+| N° | Título |
+|----|--------|
+| 01 | Portada |
+| 02 | Empresa Auditada |
+| 03 | Portal de Clientes |
+| 04 | Objetivo de la Auditoría |
+| 05 | Alcance |
+| 06 | SQL Injection — Descripción |
+| 07 | SQL Injection — Evidencia |
+| 08 | XSS Reflected — Descripción |
+| 09 | XSS Reflected — Evidencia |
+| 10 | Command Injection — Descripción |
+| 11 | Command Injection — Evidencia |
+| 12 | Activos de Información |
+| 13 | Matriz de Riesgo |
+| 14 | Controles ISO/IEC 27001 |
+| 15 | Plan de Recuperación (DR) |
+| 16 | Conclusiones |
+
+---
+
+## Instalación y Uso
+
+    npm install
+    npm run dev
+
+Navegación con flechas ← → del teclado o botones en pantalla.
+
+---
+
+## Importante
+
+Copia la carpeta `img_johnic/` con las tres capturas dentro de `src/` antes de ejecutar.
+
+---
+
+## Autor
+
+Nicolás Johnen · INACAP · 2026
